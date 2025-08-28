@@ -1,0 +1,6 @@
+ind.json
+br.json
+bd.json
+__pycache__/
+*.pyc
+.venv/
