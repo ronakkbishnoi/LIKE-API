@@ -438,7 +438,7 @@ async def send_request(session, encrypted_uid, token, url, semaphore):
                     log_error(f"Request failed with status code: {response.status}")
                     return response.status, token
                 return await response.text(), token
-        except asyncio.TimeoutError:
+except asyncio.TimeoutError:
     log_error(f"Request timed out for token: {token[:20]}...")
     return "timeout", token
 except Exception as e:
