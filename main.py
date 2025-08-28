@@ -439,10 +439,11 @@ async def send_request(session, encrypted_uid, token, url, semaphore):
                     return response.status, token
                 return await response.text(), token
         except asyncio.TimeoutError:
-            log_error(f"Request timed out for token: {token[:20]}...if         return "timeout", token
-        except Exception as e:
-            log_error(f"Exception in send_request: {e}")
-            return f"error: {str(e)}", token
+    log_error(f"Request timed out for token: {token[:20]}...")
+    return "timeout", token
+except Exception as e:
+    log_error(f"Exception in send_request: {e}")
+    return f"error: {str(e)}", token
 
 async def send_multiple_requests(uid, server_name, url):
     try:
