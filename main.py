@@ -201,7 +201,7 @@ class CredentialManager:
                 return True
             
             if attempt < max_retries:
-                wait_time = (attempt + 1) * 2  # Exponential backoff: 2, 4 seconds
+              asynct_time = (attempt + 1) * 2  # Exponential backoff: 2, 4 seconds
                 log_warning(f"Token generation failed for UID {uid}, retrying in {wait_time} seconds...")
                 time.sleep(wait_time)
         
@@ -429,21 +429,29 @@ async def send_request(session, encrypted_uid, token, url, semaphore):
         try:
             edata = bytes.fromhex(encrypted_uid)
             headers = {
-                'User-Agent': "Dalvik/2.1.0 (Linux; U; Android 9; ASUS_Z01QD Build/PI)", 'Connection': "Keep-Alive",
-                'Accept-Encoding': "gzip", 'Authorization': f"Bearer {token}", 'Content-Type': "application/x-www-form-urlencoded",
-                'Expect': "100-continue", 'X-Unity-Version': "2018.4.11f1", 'X-GA': "v1 1", 'ReleaseVersion': "OB50"
+                'User-Agent': "Dalvik/2.1.0 (Linux; U; Android 9; ASUS_Z01QD Build/PI)",
+                'Connection': "Keep-Alive",
+                'Accept-Encoding': "gzip",
+                'Authorization': f"Bearer {token}",
+                'Content-Type': "application/x-www-form-urlencoded",
+                'Expect': "100-continue",
+                'X-Unity-Version': "2018.4.11f1",
+                'X-GA': "v1 1",
+                'ReleaseVersion': "OB50"
             }
             async with session.post(url, data=edata, headers=headers, timeout=30) as response:
                 if response.status != 200:
                     log_error(f"Request failed with status code: {response.status}")
                     return response.status, token
                 return await response.text(), token
-except asyncio.TimeoutError:
-    log_error(f"Request timed out for token: {token[:20]}...")
-    return "timeout", token
-except Exception as e:
-    log_error(f"Exception in send_request: {e}")
-    return f"error: {str(e)}", token
+
+        except asyncio.TimeoutError:
+            log_error(f"Request timed out for token: {token[:20]}...")
+            return "timeout", token
+
+        except Exception as e:
+            log_error(f"Exception in send_request: {e}")
+            return f"error: {str(e)}", token
 
 async def send_multiple_requests(uid, server_name, url):
     try:
