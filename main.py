@@ -439,8 +439,7 @@ async def send_request(session, encrypted_uid, token, url, semaphore):
                     return response.status, token
                 return await response.text(), token
         except asyncio.TimeoutError:
-            log_error(f"Request timed out for token: {token[:20]}...")
-            return "timeout", token
+            log_error(f"Request timed out for token: {token[:20]}...if         return "timeout", token
         except Exception as e:
             log_error(f"Exception in send_request: {e}")
             return f"error: {str(e)}", token
@@ -679,9 +678,9 @@ def initialize_app():
     
     log_info("Application initialization completed.")
 
+import os
+
 if __name__ == '__main__':
-    # Initialize the application
     initialize_app()
-    
-    # For production, use a proper WSGI server like Gunicorn or uWSGI
-    app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
+    port = int(os.environ.get("PORT", 5000))  # Render assigns port dynamically
+    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False, threaded=True)lse
