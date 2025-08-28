@@ -4,3 +4,5 @@ pycryptodome
 protobuf
 aiohttp
 gunicorn
+gevent tp
+gunicorn
