@@ -1,8 +1,6 @@
-Flask>=2.2
-aiohttp>=3.9
-requests>=2.31
-pycryptodome>=3.20
-protobuf>=4.25
-grpcio>=1.56
-grpcio-tools>=1.56
-python-dotenv>=1.0
+Flask
+requests
+pycryptodome
+protobuf
+aiohttp
+gunicorn
